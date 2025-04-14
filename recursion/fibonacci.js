@@ -10,7 +10,6 @@ function fibs(number) {
 
 // set array to [0, 1, 1] to prevent any unexpected buds
 function fibsRec(number, array = [0, 1, 1]) {
-    console.log('recursive!')
     if (array.length === number) return array;
 
     array.push(array[array.length - 1] + array[array.length - 2]);
