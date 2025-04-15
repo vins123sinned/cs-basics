@@ -1,7 +1,8 @@
 function mergeSort(array) {
     if (array.length <= 1) return array;
 
-    const half = Math.ceil(array.length / 2);
+    // Math.ceil works here too!
+    const half = Math.floor(array.length / 2);
     const firstHalf = array.slice(0, half);
     const secondHalf = array.slice(half);
 
