@@ -101,6 +101,22 @@ class LinkedList {
         string += 'null';
         return string;
     }
+
+    insertAt(value, index) {
+        if (index === 0) return this.prepend(value);
+
+        let currentNode = this.head;
+        
+        for (let i = 0; i < index - 1; i++) {
+            if (currentNode === null) return console.log('Cannot insert!');
+            currentNode = currentNode.next;
+        }
+
+        if (currentNode.next === null) return this.append(value);
+
+        const node = new Node(value, currentNode.next.next);
+        currentNode.next = node;
+    }
 }
 
 class Node {
@@ -120,4 +136,5 @@ list.append("hamster");
 list.append("snake");
 list.append("turtle");
 
+console.log(list.insertAt("capybara", 5));
 console.log(list.toString());
