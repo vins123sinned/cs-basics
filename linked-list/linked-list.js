@@ -117,6 +117,23 @@ class LinkedList {
         const node = new Node(value, currentNode.next.next);
         currentNode.next = node;
     }
+
+    removeAt(index) {
+        //account for first and last element (head and tail);
+        if (index === 0) return this.head = this.head.next;
+
+        let currentNode = this.head;
+
+        for (let i = 0; i < index - 1; i++) {
+            if (currentNode === null) return console.log('Cannot remove!');
+            currentNode = currentNode.next;
+        }
+
+        console.log(currentNode);
+        if (currentNode.next === null) return currentNode.next = null;
+
+        currentNode.next = currentNode.next.next;
+    }
 }
 
 class Node {
@@ -136,5 +153,5 @@ list.append("hamster");
 list.append("snake");
 list.append("turtle");
 
-console.log(list.insertAt("capybara", 5));
+console.log(list.removeAt(6));
 console.log(list.toString());
