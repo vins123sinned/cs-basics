@@ -12,6 +12,7 @@ class LinkedList {
         }
 
         const node = new Node(value, null);
+
         this.tail.next = node;
         this.tail = node;
     }
@@ -19,6 +20,25 @@ class LinkedList {
     prepend(value) {
         const node = new Node(value, this.head);
         this.head = node;
+    }
+
+    size() {
+        let total = 0;
+        let currentNode = this.head;
+        while (currentNode !== null) {
+            total++;
+            currentNode = currentNode.next;
+        }
+
+        return total;
+    }
+
+    head() {
+        return this.head;
+    }
+
+    tail() {
+        return this.tail;
     }
 }
 
@@ -39,4 +59,4 @@ list.append("hamster");
 list.append("snake");
 list.append("turtle");
 
-console.log(list);
+console.log(list.size());
