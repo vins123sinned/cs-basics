@@ -75,6 +75,32 @@ class LinkedList {
 
         return true;
     }
+
+    find(value) {
+        let currentNode = this.head;
+        let index = 0;
+
+        while (currentNode.value !== value) {
+            index++;
+            currentNode = currentNode.next;
+            if (currentNode === null) return null;
+        }
+
+        return index;
+    }
+
+    toString() {
+        let currentNode = this.head;
+        let string = '';
+
+        while (currentNode !== null) {
+            string += `( ${currentNode.value} ) -> `;
+            currentNode = currentNode.next;
+        }
+
+        string += 'null';
+        return string;
+    }
 }
 
 class Node {
@@ -94,4 +120,4 @@ list.append("hamster");
 list.append("snake");
 list.append("turtle");
 
-console.log(list.contains("t-rex"));
+console.log(list.toString());
