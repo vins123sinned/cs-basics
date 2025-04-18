@@ -25,6 +25,7 @@ class LinkedList {
     size() {
         let total = 0;
         let currentNode = this.head;
+
         while (currentNode !== null) {
             total++;
             currentNode = currentNode.next;
@@ -39,6 +40,40 @@ class LinkedList {
 
     tail() {
         return this.tail;
+    }
+
+    at(index) {
+        let currentNode = this.head;
+
+        for (let i = 0; i < index; i++) {
+            if (currentNode === null) return console.log('Index exceeds list size!');
+            currentNode = currentNode.next;
+        }
+
+        return currentNode;
+    }
+
+    pop() {
+        // could also use doubly linked list here!
+        let currentNode = this.head;
+
+        while (currentNode.next !== this.tail) {
+            currentNode = currentNode.next;
+        }
+
+        currentNode.next = null;
+        this.tail = currentNode;
+    }
+
+    contains(value) {
+        let currentNode = this.head;
+        
+        while (currentNode.value !== value) {
+            currentNode = currentNode.next;
+            if (currentNode === null) return false;
+        }
+
+        return true;
     }
 }
 
@@ -59,4 +94,4 @@ list.append("hamster");
 list.append("snake");
 list.append("turtle");
 
-console.log(list.size());
+console.log(list.contains("t-rex"));
