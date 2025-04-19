@@ -48,6 +48,40 @@ class HashMap {
             };
         }
     }
+
+    get(key) {
+        const hashCode = this.hash(key);
+
+        let currentNode = this.array[hashCode];
+
+        if (!currentNode) return null;
+        if (currentNode.next === null) return currentNode.value;
+
+        while (currentNode !== null) {
+            if (currentNode.key === key) return currentNode.value;
+
+            currentNode = currentNode.next;
+        }
+
+        // Just in case!
+        return null;
+    }
+
+    has(key) {
+        const hashCode = this.hash(key);
+
+        let currentNode = this.array[hashCode];
+
+        if (!currentNode) return false;
+
+        while (currentNode !== null) {
+            if (currentNode.key === key) return true;
+
+            currentNode = currentNode.next;
+        }
+
+        return false;
+    }
 }
 
 const people = new HashMap(16, 0.8);
@@ -55,5 +89,7 @@ const people = new HashMap(16, 0.8);
 people.set('Sita', 'Olda valueismo!');
 people.set('Rama', 'test');
 people.set('Sita', 'New valueismo!');
+people.set('Carlos', 'Test 2')
 
-console.log(people);
+//console.log(people);
+console.log(people.has('Rama'));
