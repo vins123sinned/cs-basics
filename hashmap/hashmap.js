@@ -63,7 +63,7 @@ class HashMap {
             currentNode = currentNode.next;
         }
 
-        // Just in case!
+        // just in case!
         return null;
     }
 
@@ -82,6 +82,40 @@ class HashMap {
 
         return false;
     }
+
+    remove(key) {
+        const hashCode = this.hash(key);
+
+        let currentNode = this.array[hashCode];
+
+        if (!currentNode) return false;
+
+        while (currentNode !== null) {
+            if (!currentNode.next) {
+                // only one element in the bucket
+                if (currentNode.key === key) {
+                    // also could do null
+                    this.array[hashCode] = currentNode.next;
+                    return true;
+                }
+
+                return false;
+            }
+
+            // first element (runs before the one element conditional!)
+            if (currentNode.key === key) {
+                this.array[hashCode] = currentNode.next;
+                return true;
+            }
+
+            if (currentNode.next.key === key) {
+                currentNode.next = currentNode.next.next;
+                return true;
+            }
+        
+            currentNode = currentNode.next;
+        }
+    }
 }
 
 const people = new HashMap(16, 0.8);
@@ -92,4 +126,5 @@ people.set('Sita', 'New valueismo!');
 people.set('Carlos', 'Test 2')
 
 //console.log(people);
-console.log(people.has('Rama'));
+console.log(people.remove('Sita'));
+console.log(people);
