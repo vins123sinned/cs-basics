@@ -1,4 +1,4 @@
-class HashMap {
+class HashSet {
     constructor(capacity, loadFactor) {
         this.capacity = capacity;
         this.loadFactor = loadFactor;
@@ -16,7 +16,7 @@ class HashMap {
         return hashCode;
     }
 
-    set(key, value) {
+    set(key) {
         const hashCode = this.hash(key);
 
         // Check if there is an existing value in bucket
@@ -24,17 +24,12 @@ class HashMap {
             let currentNode = this.array[hashCode];
 
             while (currentNode !== null) {
-                // Update key's value if applicable
-                if (currentNode.key === key) {
-                    currentNode.value = value;
-                    break;
-                }
+                if (currentNode.key === key) return console.log('Key already exists!');
 
                 // stop at tail node and set append
                 if (currentNode.next === null) {
                     currentNode.next = {
                         key,
-                        value,
                         next: null,
                     }
                     break;
@@ -45,7 +40,6 @@ class HashMap {
         } else {
             this.array[hashCode] = {
                 key,
-                value,
                 next: null,
             };
         }
@@ -58,11 +52,11 @@ class HashMap {
     doubleCapacity() {
         this.capacity *= 2;
 
-        const entries = this.entries();
+        const keys = this.keys();
         this.clear();
 
-        entries.forEach((entry) => {
-            this.set(entry[0], entry[1]);
+        keys.forEach((key) => {
+            this.set(key);
         });
     }
 
@@ -168,68 +162,32 @@ class HashMap {
 
         return keys;
     }
-
-    values() {
-        let values = [];
-
-        this.array.forEach((bucket) => {
-            let currentNode = bucket;
-
-            while (currentNode !== null) {
-                values.push(currentNode.value);
-                currentNode = currentNode.next;
-            }
-        });
-
-        return values;
-    }
-
-    entries() {
-        let entries = [];
-
-        this.array.forEach((bucket) => {
-            let currentNode = bucket;
-
-            while (currentNode !== null) {
-                entries.push([currentNode.key, currentNode.value]);
-                currentNode = currentNode.next;
-            }
-        });
-
-        return entries;
-    }
 }
 
-const test = new HashMap(16, 0.75)
+const set = new HashSet(16, 0.8);
 
-test.set('apple', 'red')
-test.set('banana', 'yellow')
-test.set('carrot', 'orange')
-test.set('dog', 'brown')
-test.set('elephant', 'gray')
-test.set('frog', 'green')
-test.set('grape', 'purple')
-test.set('hat', 'black')
-test.set('ice cream', 'white')
-test.set('jacket', 'blue')
-test.set('kite', 'pink')
-test.set('lion', 'golden')
+set.set('Invincible');
+set.set('Full Metal Alchemist');
+set.set('Dexter');
+set.set('Game of Thrones');
+set.set('The Hunger Games');
+set.set('Pokemon');
+set.set('Naruto');
+set.set('Severance');
+set.set('Harry Potter');
+set.set('Attack on Titan');
+set.set('National Basketball Association');
+set.set('National Football League');
+set.set('YouTube');
 
-test.set('kite', 'red')
-test.set('apple', 'green')
+set.remove('Game of Thrones');
+set.set('Severance');
 
-// this should increase the capacity!
-test.set('vinson', 'it\'s me!');
-console.log(test);
+console.log(set.remove('National Basketball Association'));
+console.log(set.has('YouTube'));
+console.log(set.length());
+console.log(set.keys());
 
-console.log(test.get('kite'));
-console.log(test.remove('kite'));
-console.log(test.length());
-console.log(test.has('elephant'));
-console.log(test.has('tree'));
-
-console.log(test.keys());
-console.log(test.values());
-console.log(test.entries());
-console.log(test.capacity)
-console.log(test.clear(true));
+console.log(set);
+set.clear(true);
+console.log(set);
