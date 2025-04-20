@@ -26,16 +26,18 @@ class HashMap {
             while (currentNode !== null) {
                 // Update key's value if applicable
                 if (currentNode.key === key) {
-                    return currentNode.value = value;
+                    currentNode.value = value;
+                    break;
                 }
 
                 // stop at tail node and set append
                 if (currentNode.next === null) {
-                    return currentNode.next = {
+                    currentNode.next = {
                         key,
                         value,
                         next: null,
                     }
+                    break;
                 };
 
                 currentNode = currentNode.next;
@@ -47,6 +49,21 @@ class HashMap {
                 next: null,
             };
         }
+
+        if (this.length() > (this.capacity * this.loadFactor)) {
+            this.doubleCapacity();
+        }
+    }
+
+    doubleCapacity() {
+        this.capacity *= 2;
+
+        const entries = this.entries();
+        this.clear();
+
+        entries.forEach((entry) => {
+            this.set(entry[0], entry[1]);
+        });
     }
 
     get(key) {
@@ -132,7 +149,8 @@ class HashMap {
         return total;
     }
 
-    clear() {
+    clear(clear) {
+        if (clear) this.capacity = 16;
         this.array = [];
     }
 
@@ -182,12 +200,36 @@ class HashMap {
     }
 }
 
-const people = new HashMap(16, 0.8);
+const test = new HashMap(16, 0.75)
 
-people.set('Sita', 'Olda valueismo!');
-people.set('Rama', 'test');
-people.set('Sita', 'New valueismo!');
-people.set('Carlos', 'Test 2')
+test.set('apple', 'red')
+test.set('banana', 'yellow')
+test.set('carrot', 'orange')
+test.set('dog', 'brown')
+test.set('elephant', 'gray')
+test.set('frog', 'green')
+test.set('grape', 'purple')
+test.set('hat', 'black')
+test.set('ice cream', 'white')
+test.set('jacket', 'blue')
+test.set('kite', 'pink')
+test.set('lion', 'golden')
 
-//console.log(people);
-console.log(people.entries());
+test.set('kite', 'red')
+test.set('apple', 'green')
+
+// this should increase the capacity!
+test.set('vinson', 'big backed, but skinnying!');
+console.log(test);
+
+console.log(test.get('kite'));
+console.log(test.remove('kite'));
+console.log(test.length());
+console.log(test.has('elephant'));
+console.log(test.has('tree'));
+
+console.log(test.keys());
+console.log(test.values());
+console.log(test.entries());
+console.log(test.capacity)
+console.log(test.clear(true));
