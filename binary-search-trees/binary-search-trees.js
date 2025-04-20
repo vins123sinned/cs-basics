@@ -43,7 +43,7 @@ class Tree {
         }
     };
 
-    insert(currentNode, value) {
+    insert(value, currentNode = this.root) {
         if (currentNode === null) return new Node(value);
 
         if (currentNode.data === value) {
@@ -52,15 +52,16 @@ class Tree {
         }
 
         if (value < currentNode.data) {
-            currentNode.left = this.insert(currentNode.left, value);
+            currentNode.left = this.insert(value, currentNode.left);
         } else if (value > currentNode.data) {
-            currentNode.right = this.insert(currentNode.right, value);
+            currentNode.right = this.insert(value, currentNode.right);
         }
 
         return currentNode;
     }
 
     getSuccessor(currentNode) {
+        // move right and go left until null to find the successor!
         currentNode = currentNode.right;
 
         while (currentNode !== null && currentNode.left !== null) {
@@ -70,28 +71,50 @@ class Tree {
         return currentNode;
     }
 
-    delete(currentNode, value) {
+    delete(value, currentNode = this.root) {
+        // At the end of list, no value to be deleted!
         if (currentNode === null) return currentNode;
 
         if (value < currentNode.data) {
-            currentNode.left = this.delete(currentNode.left, value);
+            currentNode.left = this.delete(value, currentNode.left);
         } else if (value > currentNode.data) {
-            currentNode.right = this.delete(currentNode.right, value);
+            currentNode.right = this.delete(value, currentNode.right);
         } else {
             if (currentNode.left === null) return currentNode.right;
             if (currentNode.right === null) return currentNode.left;
 
             const successor = this.getSuccessor(currentNode);
             currentNode.data = successor.data;
-            currentNode.right = this.delete(currentNode.right, successor.data);
+            currentNode.right = this.delete(successor.data, currentNode.right);
         }
 
         return currentNode;
+    }
+
+    find(value, currentNode = this.root) {
+        if (currentNode === null) {
+            console.log('No value found!');
+            return currentNode;
+        };
+
+        if (currentNode.data === value) {
+            return currentNode;
+        }
+
+        if (value < currentNode.data) {
+            return this.find(value, currentNode.left);
+        } else if (value > currentNode.data) {
+            return this.find(value, currentNode.right);
+        }
     }
 }
 
 const tree = new Tree();
 tree.buildTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-tree.insert(tree.root, 77);
-tree.delete(tree.root, 67)
+/*
+tree.insert(77);
+tree.delete(67);
+tree.insert(67);
+*/
+console.log(tree.find(1));
 tree.prettyPrint(tree.root);
