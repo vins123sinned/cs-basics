@@ -116,6 +116,40 @@ class HashMap {
             currentNode = currentNode.next;
         }
     }
+
+    length() {
+        let total = 0;
+
+        this.array.forEach((bucket) => {
+            let currentNode = bucket;
+            
+            while (currentNode !== null) {
+                total++;
+                currentNode = currentNode.next;
+            }
+        });
+
+        return total;
+    }
+
+    clear() {
+        this.array = [];
+    }
+
+    keys() {
+        let keys = [];
+
+        this.array.forEach((bucket) => {
+            let currentNode = bucket;
+
+            while (currentNode !== null) {
+                keys.push(currentNode.key);
+                currentNode = currentNode.next;
+            }
+        });
+
+        return keys;
+    }
 }
 
 const people = new HashMap(16, 0.8);
@@ -126,5 +160,4 @@ people.set('Sita', 'New valueismo!');
 people.set('Carlos', 'Test 2')
 
 //console.log(people);
-console.log(people.remove('Sita'));
-console.log(people);
+console.log(people.keys());
