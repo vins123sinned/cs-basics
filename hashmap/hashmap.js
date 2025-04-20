@@ -150,6 +150,36 @@ class HashMap {
 
         return keys;
     }
+
+    values() {
+        let values = [];
+
+        this.array.forEach((bucket) => {
+            let currentNode = bucket;
+
+            while (currentNode !== null) {
+                values.push(currentNode.value);
+                currentNode = currentNode.next;
+            }
+        });
+
+        return values;
+    }
+
+    entries() {
+        let entries = [];
+
+        this.array.forEach((bucket) => {
+            let currentNode = bucket;
+
+            while (currentNode !== null) {
+                entries.push([currentNode.key, currentNode.value]);
+                currentNode = currentNode.next;
+            }
+        });
+
+        return entries;
+    }
 }
 
 const people = new HashMap(16, 0.8);
@@ -160,4 +190,4 @@ people.set('Sita', 'New valueismo!');
 people.set('Carlos', 'Test 2')
 
 //console.log(people);
-console.log(people.keys());
+console.log(people.entries());
