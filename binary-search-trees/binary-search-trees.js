@@ -211,11 +211,21 @@ class Tree {
 
         return this.findLeaf(valueNode);
     }
+
+    depth(value, depth = 1, currentNode = this.root) {
+        if (!currentNode) return null;
+        if (currentNode.data === value) return depth - 1;
+
+        if (value < currentNode.data) {
+            return this.depth(value, depth + 1, currentNode.left);
+        } else if (value > currentNode.data) {
+            return this.depth(value, depth + 1, currentNode.right);
+        }
+    }
 }
 
 const tree = new Tree();
 tree.buildTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
-console.log(tree.height(6345));
-console.log(tree.height(8));
+console.log(tree.depth(9));
 tree.prettyPrint(tree.root);
