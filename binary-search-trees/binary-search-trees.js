@@ -181,10 +181,41 @@ class Tree {
         this.postOrder(callback, currentNode.right);
         callback(currentNode);
     }
+
+    findValue(value, currentNode = this.root) {
+        if (!currentNode) return null;
+        if (currentNode.data === value) return currentNode;
+
+        if (value < currentNode.data) {
+            return this.findValue(value, currentNode.left);
+        } else if (value > currentNode.data) {
+            return this.findValue(value, currentNode.right);
+        }
+    }
+
+    findLeaf(currentNode, height = 0) {
+        // height - 1 will return number of edges instead of nodes
+        if (!currentNode) return height - 1;
+        if (!currentNode.left && !currentNode.right) return height;
+
+        const leftHeight = this.findLeaf(currentNode.left, height + 1);
+        const rightHeight = this.findLeaf(currentNode.right, height + 1);
+
+        return Math.max(leftHeight, rightHeight);
+    }
+
+    height(value) {
+        const valueNode = this.findValue(value);
+
+        if (!valueNode) return null;
+
+        return this.findLeaf(valueNode);
+    }
 }
 
 const tree = new Tree();
 tree.buildTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
-tree.postOrder((node) => console.log(node.data));
+console.log(tree.height(6345));
+console.log(tree.height(8));
 tree.prettyPrint(tree.root);
