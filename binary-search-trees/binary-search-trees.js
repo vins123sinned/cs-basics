@@ -172,7 +172,7 @@ class Tree {
         callback(currentNode);
         this.inOrder(callback, currentNode.right, array);
 
-        return array
+        return array;
     }
 
     postOrder(callback, currentNode = this.root) {
@@ -255,14 +255,60 @@ class Tree {
     }
 }
 
-const tree = new Tree();
-tree.buildTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+function randomArray() {
+    let array = []
 
-tree.delete(6345);
-tree.delete(23);
-tree.insert(10);
-tree.insert(11);
-console.log(tree.isBalanced());
-tree.rebalance();
-tree.prettyPrint(tree.root);
-console.log(tree.isBalanced());
+    while (array.length < 15) {
+        const randomNumber = Math.floor(Math.random() * 100) + 1;
+        array.push(randomNumber);
+    }
+
+    return array;
+}
+
+function printElements() {
+    let levelArray = [];
+    let preArray = [];
+    let inArray = [];
+    let postArray = [];
+
+    console.log('Level Order');
+    tree.levelOrder((node) => levelArray.push(node.data));
+    console.log(levelArray);
+
+    console.log('Pre Order');
+    tree.preOrder((node) => preArray.push(node.data));
+    console.log(preArray);
+
+    console.log('In Order');
+    tree.inOrder((node) => inArray.push(node.data));
+    console.log(inArray);
+
+    console.log('Post Order');
+    tree.postOrder((node) => postArray.push(node.data));
+    console.log(postArray);
+}
+
+function driverScript() {
+    tree.buildTree(randomArray());
+    tree.prettyPrint(tree.root);
+    console.log(tree.isBalanced());
+    printElements();
+
+    console.log('Unbalancing...');
+    for (let i = 0; i < 3; i++) {
+        const randomNumber = Math.floor(Math.random() * 500) + 101;
+        tree.insert(randomNumber);
+    }
+    tree.prettyPrint(tree.root);
+    console.log(tree.isBalanced());
+
+    console.log('Balancing...');
+    tree.rebalance();
+    tree.prettyPrint(tree.root);
+    console.log(tree.isBalanced());
+    printElements();
+}
+
+const tree = new Tree();
+driverScript();
