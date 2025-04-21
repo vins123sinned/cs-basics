@@ -7,8 +7,7 @@ class Node {
 }
 
 class Tree {
-    constructor(array) {
-        this.array = array;
+    constructor() {
         this.root = null;
     }
 
@@ -164,13 +163,16 @@ class Tree {
         this.preOrder(callback, currentNode.right);
     }
 
-    inOrder(callback, currentNode = this.root) {
+    inOrder(callback, currentNode = this.root, array = []) {
         if (!callback) throw new Error('Callback is required!');
         if (!currentNode) return;
 
-        this.inOrder(callback, currentNode.left);
+        this.inOrder(callback, currentNode.left, array);
+        array.push(currentNode.data);
         callback(currentNode);
-        this.inOrder(callback, currentNode.right);
+        this.inOrder(callback, currentNode.right, array);
+
+        return array
     }
 
     postOrder(callback, currentNode = this.root) {
@@ -227,8 +229,8 @@ class Tree {
         if (!currentNode) return height - 1;
         if (!currentNode.left && !currentNode.right) return height;
 
-        const leftHeight = this.findLeaf(currentNode.left, height + 1);
-        const rightHeight = this.findLeaf(currentNode.right, height + 1);
+        const leftHeight = this.getHeight(currentNode.left, height + 1);
+        const rightHeight = this.getHeight(currentNode.right, height + 1);
 
         return Math.max(leftHeight, rightHeight);
     }
@@ -246,6 +248,11 @@ class Tree {
 
         return leftCheck && rightCheck;
     }
+
+    rebalance() {
+        const newArray = this.inOrder((node) => console.log(node.data));
+        this.buildTree(newArray);
+    }
 }
 
 const tree = new Tree();
@@ -256,4 +263,6 @@ tree.delete(23);
 tree.insert(10);
 tree.insert(11);
 console.log(tree.isBalanced());
+tree.rebalance();
 tree.prettyPrint(tree.root);
+console.log(tree.isBalanced());
