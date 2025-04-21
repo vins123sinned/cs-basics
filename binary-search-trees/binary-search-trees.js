@@ -107,6 +107,53 @@ class Tree {
             return this.find(value, currentNode.right);
         }
     }
+
+    levelOrder(callback) {
+        if (!callback) throw new Error('Callback is required!');
+        if (this.root === null) return;
+
+        let queue = [];
+
+        queue.push(this.root);
+
+        while (queue.length !== 0) {
+            let currentNode = queue[0];
+            callback(currentNode);
+            if (currentNode.left) queue.push(currentNode.left);
+            if (currentNode.right) queue.push(currentNode.right);
+            queue.shift();
+        }
+
+        return queue;
+    }
+
+    // With help from ChatGPT, my brains are getting stronger...
+    collectByLevel(node, level, levels) {
+        if (node === null) return;
+
+        // initialize level array to be able to push
+        if (!levels[level]) levels[level] = [];
+        
+        levels[level].push(node);
+
+        // increment level by one to emulate a queue
+        this.collectByLevel(node.left, level + 1, levels);
+        this.collectByLevel(node.right, level + 1, levels);
+
+        return levels;
+    }
+
+    levelOrderRec(callback) {
+        if (!callback) throw new Error('Callback is required!');
+
+        const levels = this.collectByLevel(this.root, 0, []);
+
+        levels.forEach((level) => {
+            level.forEach((item) => {
+                callback(item);
+            });
+        });
+    }
 }
 
 const tree = new Tree();
@@ -115,6 +162,7 @@ tree.buildTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 tree.insert(77);
 tree.delete(67);
 tree.insert(67);
-*/
 console.log(tree.find(1));
+*/
+tree.levelOrderRec((node) => console.log(node.data));
 tree.prettyPrint(tree.root);
