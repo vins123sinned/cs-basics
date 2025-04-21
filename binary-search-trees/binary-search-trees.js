@@ -131,7 +131,7 @@ class Tree {
     collectByLevel(node, level, levels) {
         if (node === null) return;
 
-        // initialize level array to be able to push
+        // initialize level array if new level
         if (!levels[level]) levels[level] = [];
 
         levels[level].push(node);
@@ -222,10 +222,38 @@ class Tree {
             return this.depth(value, depth + 1, currentNode.right);
         }
     }
+
+    getHeight(currentNode, height = 0) {
+        if (!currentNode) return height - 1;
+        if (!currentNode.left && !currentNode.right) return height;
+
+        const leftHeight = this.findLeaf(currentNode.left, height + 1);
+        const rightHeight = this.findLeaf(currentNode.right, height + 1);
+
+        return Math.max(leftHeight, rightHeight);
+    }
+
+    isBalanced(currentNode = this.root) {
+        if (!currentNode) return true;
+
+        const leftHeight = this.getHeight(currentNode.left);
+        const rightHeight = this.getHeight(currentNode.right);
+
+        if (Math.abs(leftHeight - rightHeight) > 1) return false;
+
+        const leftCheck = this.isBalanced(currentNode.left);
+        const rightCheck = this.isBalanced(currentNode.right);
+
+        return leftCheck && rightCheck;
+    }
 }
 
 const tree = new Tree();
 tree.buildTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 
-console.log(tree.depth(9));
+tree.delete(6345);
+tree.delete(23);
+tree.insert(10);
+tree.insert(11);
+console.log(tree.isBalanced());
 tree.prettyPrint(tree.root);
