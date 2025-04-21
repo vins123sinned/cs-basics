@@ -133,7 +133,7 @@ class Tree {
 
         // initialize level array to be able to push
         if (!levels[level]) levels[level] = [];
-        
+
         levels[level].push(node);
 
         // increment level by one to emulate a queue
@@ -154,15 +154,37 @@ class Tree {
             });
         });
     }
+
+    preOrder(callback, currentNode = this.root) {
+        if (!callback) throw new Error('Callback is required!');
+        if (!currentNode) return;
+
+        callback(currentNode);
+        this.preOrder(callback, currentNode.left);
+        this.preOrder(callback, currentNode.right);
+    }
+
+    inOrder(callback, currentNode = this.root) {
+        if (!callback) throw new Error('Callback is required!');
+        if (!currentNode) return;
+
+        this.inOrder(callback, currentNode.left);
+        callback(currentNode);
+        this.inOrder(callback, currentNode.right);
+    }
+
+    postOrder(callback, currentNode = this.root) {
+        if (!callback) throw new Error('Callback is required!');
+        if (!currentNode) return;
+
+        this.postOrder(callback, currentNode.left);
+        this.postOrder(callback, currentNode.right);
+        callback(currentNode);
+    }
 }
 
 const tree = new Tree();
 tree.buildTree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-/*
-tree.insert(77);
-tree.delete(67);
-tree.insert(67);
-console.log(tree.find(1));
-*/
-tree.levelOrderRec((node) => console.log(node.data));
+
+tree.postOrder((node) => console.log(node.data));
 tree.prettyPrint(tree.root);
