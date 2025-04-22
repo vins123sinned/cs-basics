@@ -69,7 +69,9 @@ class Board {
     }
 
     knightMoves(start, end) {
-        // also return if invalid parameters
+        if (!this.checkLocation(start[0], start[1]) ||
+            !this.checkLocation(end[0], end[1])) return console.log('Invalid Inputs!');
+
         // get shortest path
         const tree = new Tree(start, this.adjacencyList);
         tree.buildTree();
@@ -106,7 +108,7 @@ class Tree {
         // but this takes a lot of time complexity 
         if (limit > 5) return;
 
-        const index = (currentNode.location[0] * 8) + (currentNode.location[1] % 8);
+        const index = (currentNode.location[0] * 8) + currentNode.location[1] % 8;
         
         this.adjacencyList[index].forEach((edge) => {
             currentNode.children.push(new Node(edge, currentNode));
