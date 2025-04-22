@@ -3,6 +3,7 @@ class Board {
     constructor() {
         this.height = 8;
         this.length = 8;
+        this.adjacencyList = null;
     }
 
     checkLocation(height, length) {
@@ -40,14 +41,66 @@ class Board {
             }
         }
 
-        return array;
+        this.adjacencyList = array;
+    }
+
+    findPath(currentNode, targetNode) {
+        if (!currentNode) return null;
+
+        let queue = [];
+        queue.push(currentNode);
+
+        while (queue.length !== 0) {
+            const edge = queue.shift();
+
+            // to do later
+            if (edge.location == targetNode) console.log('yes!');
+
+            edge.children.forEach((child) => {
+                queue.push(child);
+            });
+        }
     }
 
     knightMoves(start, end) {
         // get shortest path
+        const tree = new Tree(start, this.adjacencyList);
+        tree.buildTree();
+
+        this.findPath(tree.root, end);
+    }
+}
+
+class Node {
+    constructor(location) {
+        this.location = location;
+        this.children = [];
+    }
+}
+
+class Tree {
+    constructor(root, adjacencyList) {
+        this.root = new Node(root);
+        this.adjacencyList = adjacencyList;
+    }
+
+    buildTree(currentNode = this.root, limit = 0) {
+        // arbitrary number to keep recursion from getting too long!
+        // but this takes a lot of time complexity 
+        if (limit > 5) return;
+
+        const index = (currentNode.location[0] * 8) + (currentNode.location[1] % 8);
+        
+        this.adjacencyList[index].forEach((edge) => {
+            currentNode.children.push(new Node(edge));
+        });
+
+        currentNode.children.forEach((child) => {
+            this.buildTree(child, limit + 1);
+        })
     }
 }
 
 const board = new Board();
-const array = board.createAdjacencyList();
-console.log(array);
+board.createAdjacencyList();
+board.knightMoves([0, 0], [3, 3]);
