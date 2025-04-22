@@ -1,18 +1,46 @@
 // Create board data structure
 class Board {
-    constructor(height, length) {
-        // height and length of board
-        this.height = height;
-        this.length = length;
+    constructor() {
+        this.height = 8;
+        this.length = 8;
+    }
+
+    checkLocation(height, length) {
+        const acceptableValues = [0, 1, 2, 3, 4, 5, 6, 7];
+
+        return acceptableValues.includes(height) && acceptableValues.includes(length);
+    }
+
+    possibleMoves(height, length) {
+        let possibleMoves = [];
+
+        const moves = [
+            [1 , 2], [1, -2],
+            [2, 1], [2, -1],
+            [-1, 2], [-1, -2],
+            [-2, 1], [-2, -1],
+        ];
+
+        moves.forEach((move) => {
+            if (this.checkLocation(height + move[0], length + move[1])) {
+                possibleMoves.push([height + move[0], length + move[1]]);
+            }
+        });
+        
+        return possibleMoves;
     }
 
     createAdjacencyList() {
+        let array = [];
+
         // quadratic complexity
         for (let i = 0; i < this.height; i++) {
             for (let j = 0; j < this.length; j++) {
-                console.log([`${i}, ${j}`])
+                array.push(this.possibleMoves(i, j));
             }
         }
+
+        return array;
     }
 
     knightMoves(start, end) {
@@ -20,5 +48,6 @@ class Board {
     }
 }
 
-const board = new Board(8, 8);
-board.createAdjacencyList();
+const board = new Board();
+const array = board.createAdjacencyList();
+console.log(array);
