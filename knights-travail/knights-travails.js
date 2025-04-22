@@ -53,8 +53,7 @@ class Board {
         while (queue.length !== 0) {
             const edge = queue.shift();
 
-            // to do later
-            if (edge.location == targetNode) console.log('yes!');
+            if (edge.location.toString() === targetNode.toString()) return edge;
 
             edge.children.forEach((child) => {
                 queue.push(child);
@@ -62,25 +61,43 @@ class Board {
         }
     }
 
+    printPath(path) {
+        console.log(`You made it in ${path.length - 1} moves! Here's your path:`);
+        path.forEach((move) => {
+            console.log(move);
+        })
+    }
+
     knightMoves(start, end) {
+        // also return if invalid parameters
         // get shortest path
         const tree = new Tree(start, this.adjacencyList);
         tree.buildTree();
 
-        this.findPath(tree.root, end);
+        let path = this.findPath(tree.root, end);
+        const pathArray = [];
+
+        while (path.parent !== null) {
+            pathArray.push(path.location);
+            path = path.parent;
+        }
+
+        pathArray.push(start);
+        this.printPath(pathArray.reverse());
     }
 }
 
 class Node {
-    constructor(location) {
+    constructor(location, parent) {
         this.location = location;
+        this.parent = parent;
         this.children = [];
     }
 }
 
 class Tree {
     constructor(root, adjacencyList) {
-        this.root = new Node(root);
+        this.root = new Node(root, null);
         this.adjacencyList = adjacencyList;
     }
 
@@ -92,7 +109,7 @@ class Tree {
         const index = (currentNode.location[0] * 8) + (currentNode.location[1] % 8);
         
         this.adjacencyList[index].forEach((edge) => {
-            currentNode.children.push(new Node(edge));
+            currentNode.children.push(new Node(edge, currentNode));
         });
 
         currentNode.children.forEach((child) => {
@@ -103,4 +120,4 @@ class Tree {
 
 const board = new Board();
 board.createAdjacencyList();
-board.knightMoves([0, 0], [3, 3]);
+board.knightMoves([3, 3], [4, 3]);
